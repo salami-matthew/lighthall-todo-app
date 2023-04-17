@@ -1,0 +1,49 @@
+.home{
+  color: #000000;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.home-title{
+  margin-top: 144px ;
+  font-size: 3.125rem;
+  margin-bottom: 17px;
+  font-weight: 700;
+}
+
+.home p{
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.home label{
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: block;
+}
+
+.home input{
+  width: 22.813rem;
+  height: 2.438rem;
+}
+
+.login-form{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.login-btn{
+  width: 152px;
+  height: 55px;
+  font-size: 18px;
+  color: white;
+  background: #6AA6FF;
+  border-radius: 15px;
+  border: none;
+  align-self: center;
+  margin-top: 3rem;
+}
