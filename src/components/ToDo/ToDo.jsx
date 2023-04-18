@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import "./ToDo.css"
 import ToDoItem from '../ToDoItem/ToDoItem'
+import { useLocation } from 'react-router-dom';
+import { collection, query, where, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { db } from '../../../firebase-config.js';
 
 const ToDo = () => {
   const [task, setTask] = useState({
@@ -10,6 +13,20 @@ const ToDo = () => {
   });
 
   const [taskList, setTaskList] = useState([]);
+
+  const { search } = useLocation();
+  const name = new URLSearchParams(search).get('name');
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const userQuery = query(collection(db, 'Users'), where('name', '==', name));
+      const userRef = await getDocs(userQuery);
+      userRef.forEach((doc) => {
+        setTaskList(doc.data().tasks);
+      });
+    };
+    fetchTasks();
+  }, [name]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -21,29 +38,50 @@ const ToDo = () => {
     });
   };
 
-  function submitTask(event) {
-    setTaskList((prevList) => {
-      return [...prevList, task]
-    });
-    setTask({
-      title: "",
-      description: "",
-      date: ""
-    });
+  async function submitTask(event) {
     event.preventDefault();
-  };
+    if (!task.title) {
+      return;
+    }
+    try {
+      const userQuery = query(collection(db, 'Users'), where('name', '==', name));
+      const userRef = await getDocs(userQuery);
+      if (userRef.empty) {
+        await addDoc(collection(db, 'Users'), { name, tasks: [task] });
+        setTaskList([task]);
+      } else {
+        const userDoc = doc(db, 'Users', userRef.docs[0].id);
+        const userTasks = userRef.docs[0].data().tasks;
+        const updatedTasks = [...userTasks, task];
+        await updateDoc(userDoc, { tasks: updatedTasks });
+        setTaskList(updatedTasks);
+      }
+      setTask({ title: '', description: '', date: '' });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-  function deleteTask(id) {
-    setTaskList((prevList) => {
-      prevList.filter((task, taskIndex) => {
+  async function deleteTask(id) {
+    try {
+      const userQuery = query(collection(db, 'Users'), where('name', '==', name));
+      const userRef = await getDocs(userQuery);
+      const userDoc = userRef.docs[0];
+      const userTasks = userDoc.data().tasks;
+      const updatedTasks = userTasks.filter((_, taskIndex) => {
         return taskIndex !== id;
       });
-    });
-  };
+      const userDocRef = doc(collection(db, 'Users'), userDoc.id);
+      await updateDoc(userDocRef, { tasks: updatedTasks });
+      setTaskList(updatedTasks);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className='todo'>
-      <h1 className='todo-title'>Joe's ToDo</h1>
+      <h1 className='todo-title'>{name}'s ToDo</h1>
       <div className='todo-header'>
 
         <form autoComplete='off' action='/todo' method='POST' className='todo-form'>
