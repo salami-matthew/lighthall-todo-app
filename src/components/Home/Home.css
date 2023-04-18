@@ -27,6 +27,7 @@
 .home input{
   width: 22.813rem;
   height: 2.438rem;
+  padding: 10px;
 }
 
 .login-form{
@@ -39,11 +40,15 @@
 .login-btn{
   width: 152px;
   height: 55px;
-  font-size: 18px;
-  color: white;
   background: #6AA6FF;
   border-radius: 15px;
   border: none;
   align-self: center;
   margin-top: 3rem;
 }
+
+.login-btn span{
+  font-size: 18px;
+  color: aliceblue;
+}
+

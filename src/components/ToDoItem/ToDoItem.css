@@ -1,0 +1,59 @@
+.todo-item-container{
+  width: 100%;
+  background: #D6E6FF;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 25px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #174A97;
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+
+
+.left-section{
+  display: flex;
+  align-items: center;
+}
+
+.left-section input{
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+.todo-item-content{
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.right-section .status{
+  width: 117.38px;
+  height: 25px;
+  color: white;
+  background: #002950;
+  border-radius: 5px;
+  display: grid;
+  place-content: center;
+}
+
+.right-section{
+  display: flex;
+  gap: 25px;
+}
+
+.action-icons{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.right-section span{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
