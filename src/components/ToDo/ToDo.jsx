@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "./ToDo.css"
 import ToDoItem from '../ToDoItem/ToDoItem'
+import Filter from '../Filter/Filter';
 
 const ToDo = () => {
   const [task, setTask] = useState({
@@ -65,9 +66,9 @@ const ToDo = () => {
           <button onClick={submitTask} className='todo-btn'>Add</button>
         </form>
       </div>
-      <div className='filter'>
-        filter
-      </div>
+
+
+      <Filter />
 
       <div className='todo-list'>
         {taskList && taskList.map((t, index) => {
