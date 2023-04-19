@@ -4,14 +4,17 @@ import ToDoItem from '../ToDoItem/ToDoItem'
 import Filter from '../Filter/Filter';
 
 const ToDo = () => {
+  // for form values
   const [task, setTask] = useState({
     title: "",
     description: "",
     date: ""
   });
 
+  // for list values to be rendered
   const [taskList, setTaskList] = useState([]);
 
+  // stores form values dynamically
   function handleChange(event) {
     const { name, value } = event.target;
     setTask((prevTask) => {
@@ -22,6 +25,7 @@ const ToDo = () => {
     });
   };
 
+  // submit a form to render a new task
   function submitTask(event) {
     setTaskList((prevList) => {
       return [...prevList, task]
@@ -34,6 +38,7 @@ const ToDo = () => {
     event.preventDefault();
   };
 
+  // delete a task
   function deleteTask(id) {
     setTaskList((prevList) => {
       prevList.filter((task, taskIndex) => {
@@ -42,8 +47,10 @@ const ToDo = () => {
     });
   };
 
+  // main component
   return (
     <div className='todo'>
+      {/* todo header section */}
       <h1 className='todo-title'>Joe's ToDo</h1>
       <div className='todo-header'>
 
@@ -67,9 +74,22 @@ const ToDo = () => {
         </form>
       </div>
 
+      {/* filter bar section */}
+      <div className='filter-bar-container'>
+        <div className='left-filter-bar'>
+          <p>Filter</p>
 
-      <Filter />
+          <Filter
+            items={["All", "Not Started", "In Progress", "Completed"]}
+          />
+        </div>
 
+        <Filter
+          items={["Due Date ↑", "Due Date ↓", "Title ↑", "Title ↓"]}
+        />
+      </div>
+
+      {/* individual task section */}
       <div className='todo-list'>
         {taskList && taskList.map((t, index) => {
           return <ToDoItem

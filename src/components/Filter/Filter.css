@@ -7,35 +7,25 @@
   color: #000000;
 }
 
-.filter input{
-  padding: 5px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #000000;
-}
-
-
-
 /* dropdown menu */
 .dropdown {
   position: relative;
   display: inline-block;
   min-width: 160px;
-  text-align: center;
   width: 117.38px;
-  margin: 0 30px;
 }
 
 .filter-btn{
   width: 100%;
-  padding: 10px;
+  padding: 5px 10px;
   font-weight: 600;
   font-size: 14px;
-  color: white;
-  background: #38414a;
-  border-radius: 5px;
+  border-radius: 2px;
   cursor: pointer;
-  border: none;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 
@@ -51,24 +41,17 @@
 
 .dropdown-content button{
   width: 117.38px;
-  color: white;
-  background: #002950;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
   padding: 5px;
+  background-color: #f9f9f9;
   margin: 5px 0;
   cursor: pointer;
   border: none;
+  font-weight: 600;
 }
 
-button.completed{
-  background: #2C6AA3;
-}
-
-button.in-progress{
-  background: #5EB1FF;
-}
-
-button.none{
-  background-color: white;
-  color: #000000;
+.dropdown-content button:hover{
+  transform: scale(105%);
+  color: #174A97;
 }

@@ -21,7 +21,7 @@ const ToDoItem = (props) => {
 
 
       <div className='left-section'>
-        <input onClick={strikeThrough} type='checkbox' />
+        <input id='check-box' onClick={strikeThrough} type='checkbox' />
         <span style={{ textDecoration: isChecked === true && "line-through" }}>
           <p className='todo-item-title'>{props.title}</p>
           <p className='todo-item-content'>{props.description}</p>
