@@ -34,10 +34,11 @@
   width: 117.38px;
   height: 25px;
   color: white;
-  background: #002950;
+  background: #ff5252;
   border-radius: 5px;
   display: grid;
   place-content: center;
+  cursor: pointer;
 }
 
 .right-section{

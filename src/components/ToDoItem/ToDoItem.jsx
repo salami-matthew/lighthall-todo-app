@@ -8,6 +8,40 @@ const ToDoItem = (props) => {
   // let today = date.toLocaleDateString();
   const [isChecked, setIsChecked] = useState(false);
 
+  // for toggle button
+  const [status, setStatus] = useState({
+    title: "Not Started",
+    background: "#ff5252"
+  });
+  // toggle button
+  function toggleStatus(event) {
+    switch (status.title) {
+      case "Not Started":
+        setStatus({
+          title: "In Progress",
+          background: "#002950"
+        });
+        break;
+      case "In Progress":
+        setStatus({
+          title: "Completed",
+          background: "green"
+        });
+        break;
+      case "Completed":
+        setStatus({
+          title: "Not Started",
+          background: "#ff5252"
+        });
+        break;
+      default:
+        setStatus({
+          title: "Not Started",
+          background: "#002950"
+        });
+    };
+  };
+
   function strikeThrough() {
     setIsChecked(!isChecked);
   };
@@ -35,7 +69,7 @@ const ToDoItem = (props) => {
       <div className='right-section'>
         <span className='date-status'>
           <p>{props.date}</p>
-          <div className='status'>Not Started</div>
+          <div style={{ backgroundColor: status.background }} onClick={toggleStatus} className='status'>{status.title}</div>
         </span>
 
 

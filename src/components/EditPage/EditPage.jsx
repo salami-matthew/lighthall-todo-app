@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import "./EditPage.css"
-import Filter from '../Filter/Filter';
 
 
 const EditPage = (props) => {
@@ -34,14 +33,6 @@ const EditPage = (props) => {
               <label htmlFor='description'>Description</label>
               <input onChange={handleEdit} value={task.description} name='description' id='description'></input>
             </div>
-
-            <div id='status'>
-              <Filter
-                items={["Not Started", "In Progress", "Completed"]}
-              />
-            </div>
-
-
             <div className='inputs'>
               <label htmlFor='date'>Due date</label>
               <input onChange={handleEdit} value={task.date} name='date' type='date' id='date'></input>
