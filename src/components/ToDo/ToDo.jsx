@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./ToDo.css"
 import ToDoItem from '../ToDoItem/ToDoItem'
+import EditPage from '../EditPage/EditPage'
 import { useLocation } from 'react-router-dom';
 import { collection, query, where, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../../firebase-config.js';
@@ -14,8 +15,19 @@ const ToDo = () => {
     date: ""
   });
 
+  // for modal values
+  const [newTask, setNewTask] = useState({
+    title: "",
+    description: "",
+    date: ""
+  });
+
   // for list values to be rendered
   const [taskList, setTaskList] = useState([]);
+
+  // for edit toggling
+  const [isOpened, setIsOpened] = useState(false);
+
 
   const { search } = useLocation();
   const name = new URLSearchParams(search).get('name');
@@ -86,9 +98,30 @@ const ToDo = () => {
     }
   }
 
+  // open edit modal with default values
+  function editTask(id) {
+    setIsOpened(!isOpened);
+    setTaskList((prevList) => {
+      prevList.filter((task, taskIndex) => {
+        if (taskIndex == id) {
+          setNewTask({ ...task });
+        } else { }
+      });
+    });
+  };
+
+  function closeModal() {
+    setIsOpened(!setIsOpened);
+  };
+
   // main component
   return (
     <div className='todo'>
+      <EditPage
+        task={newTask}
+        clickValue={isOpened}
+        onClose={closeModal}
+      />
       <h1 className='todo-title'>{name}'s ToDo</h1>
       <div className='todo-header'>
 
@@ -137,6 +170,7 @@ const ToDo = () => {
             description={t.description}
             date={t.date}
             onDelete={deleteTask}
+            onEdit={editTask}
           />
         })}
       </div>

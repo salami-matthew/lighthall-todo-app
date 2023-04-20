@@ -45,7 +45,7 @@ const ToDoItem = (props) => {
             <span onClick={handleClick}><AiFillCloseSquare /></span>
           </IconContext.Provider>
           <IconContext.Provider value={{ size: "1.5rem" }}>
-            <span><AiFillEdit /></span>
+            <span onClick={() => { props.onEdit(); }}><AiFillEdit /></span>
           </IconContext.Provider>
 
         </div>
