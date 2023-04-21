@@ -13,17 +13,23 @@ const Filter = (props) => {
     setIsClicked(!isClicked);
   }
 
+  function handleFilter(event) {
+    handleClick(event);
+    const { name } = event.target;
+    props.onFilter(name);
+  }
+
 
 
   return (
     <div className='filter'>
       <div className='dropdown'>
-        <button name={statusButton} style={{ backgroundColor: statusButton.background }} onClick={handleClick} className='filter-btn'>{statusButton} {isClicked === true ? <RxCaretUp /> : <RxCaretDown />}</button>
+        <button name={statusButton} onClick={handleClick} className='filter-btn'>{statusButton} {isClicked === true ? <RxCaretUp /> : <RxCaretDown />}</button>
 
         {/* dropdown content */}
         <div className='dropdown-content' style={{ display: isClicked === true && "block" }}>
           {props.items.map((item, itemIndex) => {
-            return <button id={itemIndex} name={item} onClick={handleClick}>{item}</button>
+            return <button id={itemIndex} name={item} onClick={handleFilter}>{item}</button>
           })}
         </div>
       </div>

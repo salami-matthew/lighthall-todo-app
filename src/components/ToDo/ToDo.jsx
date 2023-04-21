@@ -12,7 +12,8 @@ const ToDo = () => {
   const [task, setTask] = useState({
     title: "",
     description: "",
-    date: ""
+    date: "",
+    status: "Not Started",
   });
 
   // for modal values
@@ -27,6 +28,10 @@ const ToDo = () => {
 
   // for edit toggling
   const [isOpened, setIsOpened] = useState(false);
+
+   // for status filter
+   const [statusFilter, setStatusFilter] = useState("All");
+
 
 
   const { search } = useLocation();
@@ -73,12 +78,11 @@ const ToDo = () => {
         await updateDoc(userDoc, { tasks: updatedTasks });
         setTaskList(updatedTasks);
       }
-      setTask({ title: '', description: '', date: '' });
+      setTask({ title: '', description: '', date: '', status: '' });
     } catch (error) {
       console.error(error);
     }
   }
-  
 
   // delete a task
   async function deleteTask(id) {
@@ -99,19 +103,94 @@ const ToDo = () => {
   }
 
   // open edit modal with default values
-  function editTask(id) {
+  async function editTask(id) {
     setIsOpened(!isOpened);
-    setTaskList((prevList) => {
-      prevList.filter((task, taskIndex) => {
-        if (taskIndex == id) {
-          setNewTask({ ...task });
-        } else { }
+  
+    try {
+      const userQuery = query(collection(db, 'Users'), where('name', '==', name));
+      const userRef = await getDocs(userQuery);
+      const userDoc = userRef.docs[0];
+      const userTasks = userDoc.data().tasks;
+      const taskToEdit = userTasks.findIndex((_, index) => index === id);
+      setNewTask({ ...userTasks[taskToEdit] });
+      console.log(taskToEdit);
+      console.log(newTask);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // update status
+  async function updateTask(id) {
+    try {
+      const userQuery = query(collection(db, 'Users'), where('name', '==', name));
+      const userRef = await getDocs(userQuery);
+      const userDoc = userRef.docs[0];
+      const userTasks = userDoc.data().tasks;
+      const taskIndex = userTasks.findIndex((_, index) => index === id);
+  
+      // Update the status in the taskToEdit object
+      const taskToEdit = { ...userTasks[taskIndex] };
+      switch (taskToEdit.status) {
+        case "Not Started":
+          taskToEdit.status = "In Progress";
+          break;
+        case "In Progress":
+          taskToEdit.status = "Completed";
+          break;
+        case "Completed":
+          taskToEdit.status = "Not Started";
+          break;
+        default:
+          taskToEdit.status = "Not Started";
+      }
+  
+      const updatedTasks = [...userTasks];
+      updatedTasks[taskIndex] = taskToEdit;
+  
+      await updateDoc(doc(db, 'Users', userDoc.id), {
+        tasks: updatedTasks,
       });
-    });
-  };
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   function closeModal() {
-    setIsOpened(!setIsOpened);
+    setIsOpened(!isOpened);
+  };
+
+  // for sorting by title
+  function sortItems(name) {
+    switch (name) {
+      case "Title ↑":
+        var sortedList = [...taskList].sort((a, b) => {
+          return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
+        });
+        break;
+      case "Title ↓":
+        var sortedList = [...taskList].sort((a, b) => {
+          return a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1
+        });
+        break;
+      case "Due Date ↑":
+        var sortedList = [...taskList].sort((a, b) => {
+          return new Date(a.date) - new Date(b.date);
+        });
+        break;
+      case "Due Date ↓":
+        var sortedList = [...taskList].sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
+        break;
+    };
+    setTaskList(sortedList);
+    console.log(sortedList);
+  };
+
+  // get the name of the status filter selected
+  function filterItems(name) {
+    setStatusFilter(name);
   };
 
   // main component
@@ -121,6 +200,7 @@ const ToDo = () => {
         task={newTask}
         clickValue={isOpened}
         onClose={closeModal}
+        setTaskList={setTaskList}
       />
       <h1 className='todo-title'>{name}'s ToDo</h1>
       <div className='todo-header'>
@@ -152,11 +232,18 @@ const ToDo = () => {
 
           <Filter
             items={["All", "Not Started", "In Progress", "Completed"]}
+            setTaskList={setTaskList}
+            taskList={taskList}
+            userName={name}
+            onFilter={filterItems}
           />
         </div>
 
         <Filter
           items={["Due Date ↑", "Due Date ↓", "Title ↑", "Title ↓"]}
+          setTaskList={setTaskList}
+          taskList={taskList}
+          onFilter={sortItems}
         />
       </div>
 
@@ -169,8 +256,12 @@ const ToDo = () => {
             title={t.title}
             description={t.description}
             date={t.date}
+            status={t.status}
             onDelete={deleteTask}
             onEdit={editTask}
+            onUpdate={updateTask}
+            statusFilter={statusFilter}
+            name={name}
           />
         })}
       </div>
