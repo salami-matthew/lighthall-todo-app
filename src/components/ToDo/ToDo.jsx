@@ -25,6 +25,9 @@ const ToDo = () => {
   // for edit toggling
   const [isOpened, setIsOpened] = useState(false);
 
+  // for order
+  const [order, setOrder] = useState("asc");
+
 
   // stores form values dynamically
   function handleChange(event) {
@@ -75,6 +78,35 @@ const ToDo = () => {
     setIsOpened(!setIsOpened);
   };
 
+  // for sorting by title
+  function sortItems(name) {
+    switch (name) {
+      case "Title ↑":
+        var sortedList = [...taskList].sort((a, b) => {
+          return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
+        });
+        break;
+      case "Title ↓":
+        var sortedList = [...taskList].sort((a, b) => {
+          return a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1
+        });
+        break;
+      case "Due Date ↑":
+        var sortedList = [...taskList].sort((a, b) => {
+          return new Date(a.date) - new Date(b.date);
+        });
+        break;
+      case "Due Date ↓":
+        var sortedList = [...taskList].sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
+        break;
+    };
+    setTaskList(sortedList);
+    console.log(sortedList);
+  }
+
+
   // main component
   return (
     <div className='todo'>
@@ -118,7 +150,8 @@ const ToDo = () => {
         </div>
 
         <Filter
-          items={["Due Date ↑", "Due Date ↓", "Title ↑", "Title ↓"]}
+          items={["Title ↑", "Title ↓", "Due Date ↑", "Due Date ↓"]}
+          onFilter={sortItems}
         />
       </div>
 

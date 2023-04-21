@@ -19,10 +19,10 @@ const EditPage = (props) => {
   };
 
   return (
-    <div style={{ display: props.clickValue === true ? "block" : "none" }} class="edit-section">
+    <div style={{ display: props.clickValue === true ? "block" : "none" }} className="edit-section">
 
-      <div id='modal' class="modal-content todo-header">
-        <span onClick={() => { props.onClose(); }} class="close">&times;</span>
+      <div id='modal' className="modal-content todo-header">
+        <span onClick={() => { props.onClose(); }} className="close">&times;</span>
         <form autoComplete='off' action='/todo' method='POST' className='todo-form'>
           <div className='inputs-container'>
             <div className='inputs'>
