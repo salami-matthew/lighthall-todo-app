@@ -24,7 +24,7 @@ const Filter = (props) => {
   return (
     <div className='filter'>
       <div className='dropdown'>
-        <button name={statusButton} style={{ backgroundColor: statusButton.background }} onClick={handleClick} className='filter-btn'>{statusButton} {isClicked === true ? <RxCaretUp /> : <RxCaretDown />}</button>
+        <button name={statusButton} onClick={handleClick} className='filter-btn'>{statusButton} {isClicked === true ? <RxCaretUp /> : <RxCaretDown />}</button>
 
         {/* dropdown content */}
         <div className='dropdown-content' style={{ display: isClicked === true && "block" }}>

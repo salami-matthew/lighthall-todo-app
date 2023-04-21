@@ -5,6 +5,7 @@ import EditPage from '../EditPage/EditPage'
 import Filter from '../Filter/Filter';
 
 const ToDo = () => {
+
   // for form values
   const [task, setTask] = useState({
     title: "",
@@ -25,8 +26,8 @@ const ToDo = () => {
   // for edit toggling
   const [isOpened, setIsOpened] = useState(false);
 
-  // for order
-  const [order, setOrder] = useState("asc");
+  // for status filter
+  const [statusFilter, setStatusFilter] = useState("All");
 
 
   // stores form values dynamically
@@ -104,8 +105,12 @@ const ToDo = () => {
     };
     setTaskList(sortedList);
     console.log(sortedList);
-  }
+  };
 
+  // get the name of the status filter selected
+  function filterItems(name) {
+    setStatusFilter(name);
+  };
 
   // main component
   return (
@@ -146,6 +151,7 @@ const ToDo = () => {
 
           <Filter
             items={["All", "Not Started", "In Progress", "Completed"]}
+            onFilter={filterItems}
           />
         </div>
 
@@ -166,6 +172,7 @@ const ToDo = () => {
             date={t.date}
             onDelete={deleteTask}
             onEdit={editTask}
+            statusFilter={statusFilter}
           />
         })}
       </div>

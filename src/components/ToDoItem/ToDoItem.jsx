@@ -13,6 +13,7 @@ const ToDoItem = (props) => {
     title: "Not Started",
     background: "#ff5252"
   });
+
   // toggle button
   function toggleStatus(event) {
     switch (status.title) {
@@ -51,7 +52,7 @@ const ToDoItem = (props) => {
   };
 
   return (
-    <div className='todo-item-container'>
+    <div className='todo-item-container' style={{ display: (props.statusFilter === status.title) || (props.statusFilter !== "All") && "none" }}>
 
 
       <div className='left-section'>
